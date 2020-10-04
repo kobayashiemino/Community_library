@@ -143,10 +143,10 @@ class HomeViewController: UIViewController {
                                    style: .done,
                                    target: self,
                                    action: #selector(didTapSideMenubutton))
-        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "gear"),
+        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "bubble.left.and.bubble.right"),
                                              style: .done,
                                              target: self,
-                                             action: #selector(didLogOutbutton))
+                                             action: #selector(didTapMessageButton))
         navigationItem.leftBarButtonItem = leftButtonItem
         navigationItem.leftBarButtonItem?.tintColor = .black
         navigationItem.rightBarButtonItem = rightButtonItem
@@ -177,6 +177,11 @@ class HomeViewController: UIViewController {
                 }
             }
         }
+    }
+    
+    @objc private func didTapMessageButton() {
+        let vc = MessageTableViewController(with: ["+"])
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     @objc private func didTapBaseButton() {
