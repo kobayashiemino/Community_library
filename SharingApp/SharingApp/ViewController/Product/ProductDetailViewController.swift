@@ -105,15 +105,15 @@ class ProductDetailViewController: UIViewController {
         return button
     }()
     
-    init(post: Post) {
-        self.post = post
+    init(post: HomeItem) {
+//        self.post = post
         super.init(nibName: nil, bundle: nil)
-        
-        guard let imageURL = URL(string: post.imageURL) else { return }
-        itemImageView.sd_setImage(with: imageURL, completed: nil)
-        
-        titleLabel.text = post.title
-        captionLabel.text = post.caption
+//
+//        guard let imageURL = URL(string: post.imageURL) else { return }
+//        itemImageView.sd_setImage(with: imageURL, completed: nil)
+        itemImageView.image = post.image
+        titleLabel.text = post.price
+        captionLabel.text = post.title
     }
     
     required init?(coder: NSCoder) {

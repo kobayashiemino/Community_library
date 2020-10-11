@@ -13,13 +13,24 @@ import Firebase
 import SDWebImage
 import CCZoomTransition
 
+struct HomeItem {
+    let image: UIImage
+    let price: String
+    let title: String
+}
+
 class HomeViewController: UIViewController {
     
     private var sideMenu: SideMenuNavigationController?
-    private var sideMenuTableView = SideMenuTableView(with: ["+"])
+    private var sideMenuTableView = SideMenuTableView()
     private var collectionView: UICollectionView?
     private let menuButtons = MenuButtuns()
-    private var posts = [Post]()
+    private var posts: [HomeItem] = [HomeItem(image: UIImage(named: "chair")!, price: "$40", title: "chair"),
+                                     HomeItem(image: UIImage(named: "furniture7")!, price: "$70", title: "green cabinet"),
+                                     HomeItem(image: UIImage(named:"furniture12")!, price: "$200", title: "gray sofa"),
+                                     HomeItem(image: UIImage(named: "furniture4")!, price: "$120", title: "wood cabinet"),
+                                     HomeItem(image: UIImage(named: "furniture15")!, price: "$80", title: "pink sofa"),
+                                     HomeItem(image: UIImage(named: "table")!, price: "$105", title: "table")]
     private var selectedPosts = [Post]()
     private var selected = false
     
@@ -36,12 +47,21 @@ class HomeViewController: UIViewController {
         return button
     }()
     
-    private var categoryView: CategoryView?
+//    private var categoryView: CategoryView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        navigationItem.backBarButtonItem = UIBarButtonItem(
+            title: "TOP",
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        
         view.backgroundColor = .white
+        navigationItem.title = "Musashino community Service"
+        navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.darkGray]
         
         let layout = PinterestLayout()
         layout.delegate = self
@@ -63,9 +83,9 @@ class HomeViewController: UIViewController {
         setupNavBarItem()
         setupSideMenu()
         
-        categoryView = CategoryView()
-        view.addSubview(categoryView!)
-        categoryView?.delegate = self
+//        categoryView = CategoryView()
+//        view.addSubview(categoryView!)
+//        categoryView?.delegate = self
         view.addSubview(menuButton)
         view.addSubview(menuButtons)
         menuButtons.delegate = self
@@ -78,37 +98,37 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        fetchPosts()
+//        fetchPosts()
     }
     
-    private func fetchPosts() {
-        
-        self.posts = []
-        
-        DatabaseManeger.shared.getPostData { [weak self] result in
-            
-            guard let `self` = self else { return }
-            
-            switch result {
-            case .success(let data):
-                print("datadata:\(data)")
-                guard let postInfos = data as? [String: Any] else { return }
-                postInfos.forEach { (key, value) in
-                    guard let postInfo = value as? [String: Any] else { return }
-                    let post = Post(dictionary: postInfo)
-                    `self`.posts.append(post)
-                }
-                `self`.posts.sort {$0.uploadedDate > $1.uploadedDate}
-                
-                DispatchQueue.main.async {
-                    `self`.collectionView?.reloadData()
-                }
-                
-            case .failure(let error):
-                print(error)
-            }
-        }
-    }
+//    private func fetchPosts() {
+//
+//        self.posts = []
+//
+//        DatabaseManeger.shared.getPostData { [weak self] result in
+//
+//            guard let `self` = self else { return }
+//
+//            switch result {
+//            case .success(let data):
+//                print("datadata:\(data)")
+//                guard let postInfos = data as? [String: Any] else { return }
+//                postInfos.forEach { (key, value) in
+//                    guard let postInfo = value as? [String: Any] else { return }
+//                    let post = Post(dictionary: postInfo)
+//                    `self`.posts.append(post)
+//                }
+//                `self`.posts.sort {$0.uploadedDate > $1.uploadedDate}
+//
+//                DispatchQueue.main.async {
+//                    `self`.collectionView?.reloadData()
+//                }
+//
+//            case .failure(let error):
+//                print(error)
+//            }
+//        }
+//    }
     
     private func handleNotAuthenticated() {
         if Auth.auth().currentUser == nil {
@@ -120,11 +140,11 @@ class HomeViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        categoryView?.frame = CGRect(x: 10,
-                                    y: (navigationController?.navigationBar.bottom ?? 0) + 10,
-                                    width: view.width - 20 ,
-                                    height: 130 -  ((navigationController?.navigationBar.height ?? 0) + 20))
-        collectionView?.frame = CGRect(x: 0, y: 130, width: view.width, height: view.height - 130)
+//        categoryView?.frame = CGRect(x: 10,
+//                                    y: (navigationController?.navigationBar.bottom ?? 0) + 10,
+//                                    width: view.width - 20 ,
+//                                    height: 130 -  ((navigationController?.navigationBar.height ?? 0) + 20))
+        collectionView?.frame = CGRect(x: 5, y: 60, width: view.width - 10, height: view.height)
         menuButtons.frame = CGRect(x: view.width - 90, y: view.height - 388, width: 80, height: 308)
         menuButton.frame = CGRect(x: view.width - 80, y: view.height - 80, width: 60, height: 60)
         menuButton.layer.cornerRadius = menuButton.width / 2
@@ -139,11 +159,11 @@ class HomeViewController: UIViewController {
     }
     
     private func setupNavBarItem() {
-        let leftButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3"),
+        let leftButtonItem = UIBarButtonItem(image: UIImage(systemName: "line.horizontal.3")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal),
                                    style: .done,
                                    target: self,
                                    action: #selector(didTapSideMenubutton))
-        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "bubble.left.and.bubble.right"),
+        let rightButtonItem = UIBarButtonItem(image: UIImage(systemName: "bubble.left.and.bubble.right")?.withTintColor(.darkGray, renderingMode: .alwaysOriginal),
                                              style: .done,
                                              target: self,
                                              action: #selector(didTapMessageButton))
@@ -269,9 +289,9 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        if selected {
-            return selectedPosts.count
-        }
+//        if selected {
+//            return selectedPosts.count
+//        }
         return posts.count
     }
     
@@ -279,11 +299,11 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: HomeCell.identifier, for: indexPath) as! HomeCell
         
-        if selected {
-            cell.configure(post: selectedPosts[indexPath.row])
-        } else {
-            cell.configure(post: posts[indexPath.row])
-        }
+//        if selected {
+//            cell.configure(post: selectedPosts[indexPath.row])
+//        } else {
+        cell.configure(post: posts[indexPath.row])
+//        }
         return cell
     }
     
@@ -306,22 +326,26 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             self.present(vc, animated: true, completion: nil)
         }
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: view.width, height: 20)
+    }
 }
 
 extension HomeViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        let imageURLString = posts[indexPath.row].imageURL
-        guard let imageURL = URL(string: imageURLString) else { return 0 }
+//        let imageURLString = posts[indexPath.row].imageURL
+//        guard let imageURL = URL(string: imageURLString) else { return 0 }
         
-        do {
-            let data = try Data(contentsOf: imageURL)
-            let image = UIImage(data: data)
-            let imageHeight = max((image?.size.height ?? 0)/2, 200)
-            return imageHeight
-        } catch {
-            print("error")
-        }
-        return 0
+//        do {
+//            let data = try Data(contentsOf: imageURL)
+//            let image = UIImage(data: data)
+//            let imageHeight = max((image?.size.height ?? 0)/2, 200)
+//            return imageHeight
+//        } catch {
+//            print("error")
+//        }
+        return 200
     }
 }
 
@@ -338,11 +362,11 @@ extension HomeViewController: PinterestLayoutDelegate {
 //    }
 //}
 
-extension HomeViewController: CategoryViewDelegate {
-    func didTapCategoryButton(category: String) {
-        selectedPosts = []
-        selected = true
-        selectedPosts.append ( contentsOf: category == "All" ? posts : posts.filter { $0.category == category } )
-        self.collectionView?.reloadData()
-    }
-}
+//extension HomeViewController: CategoryViewDelegate {
+//    func didTapCategoryButton(category: String) {
+//        selectedPosts = []
+//        selected = true
+//        selectedPosts.append ( contentsOf: category == "All" ? posts : posts.filter { $0.category == category } )
+//        self.collectionView?.reloadData()
+//    }
+//}

@@ -33,7 +33,9 @@ class MessageTableViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.addSubview(tableView)
+        navigationController?.navigationBar.tintColor = .darkGray
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "plus"),
                                                             style: .done,
                                                             target: self,
@@ -42,6 +44,7 @@ class MessageTableViewController: UIViewController {
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
     }
     
     override func viewDidLayoutSubviews() {
@@ -85,12 +88,20 @@ extension MessageTableViewController: UITableViewDelegate, UITableViewDataSource
         if indexPath.row == 0 {
             cell.setupfirstRow()
             return cell
+        } else if indexPath.row == 1 {
+            cell.setupSecondRow()
         }
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        
+        if indexPath.row == 0 {
+            return 100
+        } else if indexPath.row == 1 {
+            return 120
+        }
+        return 130
     }
     
     @objc private func didTapCancelButton(_ sender: CustomButton) {

@@ -25,7 +25,7 @@ class MessageAddViewController: UIViewController {
     
     private let photoImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.backgroundColor = .systemPink
+        imageView.backgroundColor = UIColor.lightGray.withAlphaComponent(0.5)
         imageView.isUserInteractionEnabled = true
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
@@ -185,7 +185,7 @@ class MessageAddViewController: UIViewController {
         itemImageScrollView.addSubview(photoImageView)
 //        scrollView.addSubview(itemImageView)
         itemImageScrollView.addSubview(addImageButton)
-        scrollView.addSubview(SDGsButton)
+//        scrollView.addSubview(SDGsButton)
         scrollView.addSubview(titleTextField)
 //        scrollView.addSubview(urlTextField)
 //        scrollView.addSubview(categoryButton)
@@ -239,7 +239,7 @@ class MessageAddViewController: UIViewController {
         addImageButton.layer.cornerRadius = addImageButton.width / 2
         titleTextField.frame = CGRect(x: 10,
                                       y: itemImageScrollView.bottom + 10,
-                                      width: view.width - 90,
+                                      width: view.width - 20,
                                       height: 52)
         SDGsButton.frame = CGRect(x: titleTextField.right + 20,
                                   y: itemImageScrollView.bottom + 10,

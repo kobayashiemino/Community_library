@@ -96,6 +96,27 @@ class MessageDetailViewController: UIViewController {
         textView.isUserInteractionEnabled = false
         return textView
     }()
+    
+    private let cheerButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "hand.raised"), for: .normal)
+        button.tintColor = .lightGray
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 25
+        return button
+    }()
+    
+    private let agreeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "hand.thumbsup"), for: .normal)
+        button.tintColor = .lightGray
+        button.layer.borderColor = UIColor.lightGray.cgColor
+        button.layer.borderWidth = 1
+        button.layer.cornerRadius = 25
+        return button
+    }()
+    
 //
 //    private let SDGsButton: UIButton = {
 //        let button = UIButton()
@@ -149,20 +170,22 @@ class MessageDetailViewController: UIViewController {
         view.addSubview(itemImageView)
         itemImageView.addSubview(backTopreviousViewButton)
 //        itemImageView.addSubview(blurView)
-        itemImageView.addSubview(SDGsLabel)
+//        itemImageView.addSubview(SDGsLabel)
 //        view.addSubview(rankImageView)
         view.addSubview(titleLabel)
-        view.addSubview(likeButton)
+//        view.addSubview(likeButton)
 //        view.addSubview(websiteButton)
         view.addSubview(captionLabel)
 //        view.addSubview(SDGsButton)
 //        view.addSubview(communityButton)
+        view.addSubview(cheerButton)
+        view.addSubview(agreeButton)
         
         backTopreviousViewButton.addTarget(self, action: #selector(didTapBackTopreviousViewButton), for: .touchUpInside)
     }
     
     override func viewDidLayoutSubviews() {
-        itemImageView.frame = CGRect(x: 0, y: 0, width: view.width, height: view.width)
+        itemImageView.frame = CGRect(x: 0, y: 0, width: view.width, height: view.width - 50)
         SDGsLabel.frame = CGRect(x: view.width - 60, y: 10, width: 50, height: 50)
         SDGsLabel.layer.cornerRadius = SDGsLabel.width / 2
 //        blurView.frame = CGRect(x: view.width - 60, y: 10, width: 50, height: 50)
@@ -172,7 +195,7 @@ class MessageDetailViewController: UIViewController {
                                   y: itemImageView.bottom + 10,
                                   width: view.width - 90,
                                   height: 52)
-        likeButton.frame = CGRect(x: view.width - 62, y: titleLabel.top, width: 52, height: 52)
+//        likeButton.frame = CGRect(x: view.width - 62, y: titleLabel.top, width: 52, height: 52)
         //        rankImageView.frame = CGRect(x: titleLabel.right + 20,
         //                                     y: itemImageView.bottom + 10,
         //                                     width: 52, height: 52)
@@ -180,7 +203,7 @@ class MessageDetailViewController: UIViewController {
         captionLabel.frame = CGRect(x: 10,
                                     y: titleLabel.bottom + 10,
                                     width: view.width - 20,
-                                    height: view.height - (titleLabel.bottom + 10 + 62))
+                                    height: view.height - (titleLabel.bottom + 10 + 70))
 //        websiteButton.frame = CGRect(x: 10,
 //                                     y: captionLabel.bottom + 10,
 //                                     width: view.width - 20,
@@ -193,6 +216,8 @@ class MessageDetailViewController: UIViewController {
 //                                       y: websiteButton.bottom + 10,
 //                                       width: (view.width / 2) - 15,
 //                                       height: 52)
+        cheerButton.frame = CGRect(x: view.width - 60, y: captionLabel.bottom + 10, width: 50, height: 50)
+        agreeButton.frame = CGRect(x: view.width - 120, y: captionLabel.bottom + 10, width: 50, height: 50)
     }
     
     @objc private func didTapBackTopreviousViewButton() {

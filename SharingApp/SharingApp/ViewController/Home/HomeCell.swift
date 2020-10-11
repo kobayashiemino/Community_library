@@ -15,10 +15,21 @@ class HomeCell: UICollectionViewCell {
     
     private var categoryTitle: String?
     
+    private let shadowView: UIView = {
+        let view = UIView()
+        view.layer.shadowColor = UIColor.lightGray.cgColor
+        view.layer.shadowOffset = CGSize(width: 1, height: 1)
+        view.layer.shadowRadius = 5
+        view.layer.shadowOpacity = 0.5
+        view.layer.cornerRadius = 5
+        view.backgroundColor = .white
+        return view
+    }()
+    
     public let itemView: UIImageView = {
         let imageView = UIImageView()
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         imageView.layer.cornerRadius = 20
         return imageView
     }()
@@ -59,7 +70,8 @@ class HomeCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .lightGray
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.font = UIFont.boldSystemFont(ofSize: 15)
         return label
     }()
     
@@ -67,26 +79,29 @@ class HomeCell: UICollectionViewCell {
         let label = UILabel()
         label.numberOfLines = 1
         label.textColor = .lightGray
-        label.textAlignment = .center
+        label.textAlignment = .left
+        label.font = UIFont.systemFont(ofSize: 16)
         return label
     }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .white
-        addSubview(itemView)
-        itemView.addSubview(categoryLabel)
-        addSubview(brandNameLabel)
-        addSubview(productNameLabel)
+        addSubview(shadowView)
+        shadowView.addSubview(itemView)
+//        itemView.addSubview(categoryLabel)
+        shadowView.addSubview(brandNameLabel)
+        shadowView.addSubview(productNameLabel)
 //        itemView.addSubview(blurView)
 //        itemView.addSubview(thankButton)
     }
     
     override func layoutSubviews() {
-        itemView.frame = CGRect(x: 0, y: 0, width: width, height: height - 80)
+        shadowView.frame = bounds
+        itemView.frame = CGRect(x: 0, y: 10, width: width, height: height - 80)
         categoryLabel.frame = CGRect(x: 10, y: 10, width: 70, height: 40)
-        brandNameLabel.frame = CGRect(x: 0, y: itemView.bottom + 10, width: width, height: 20)
-        productNameLabel.frame = CGRect(x: 0, y: brandNameLabel.bottom + 10, width: width, height: 20)
+        brandNameLabel.frame = CGRect(x: 10, y: itemView.bottom + 10, width: width, height: 20)
+        productNameLabel.frame = CGRect(x: 10, y: brandNameLabel.bottom + 10, width: width, height: 20)
         
 //        blurView.frame = CGRect(x: 0, y: width, width: width, height: height - width)
         
@@ -99,11 +114,11 @@ class HomeCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func configure(post: Post) {
-        let imageUrl = URL(string: post.imageURL)
-        itemView.sd_setImage(with: imageUrl, completed: nil)
-        
-        brandNameLabel.text = post.title
+    public func configure(post: HomeItem) {
+//        let imageUrl = URL(string: post.imageURL)
+//        itemView.sd_setImage(with: imageUrl, completed: nil)
+        itemView.image = post.image
+        brandNameLabel.text = post.price
         productNameLabel.text = post.title
     }
 }

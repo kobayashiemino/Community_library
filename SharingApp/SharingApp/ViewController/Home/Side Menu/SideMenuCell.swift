@@ -27,7 +27,7 @@ class SideMenuCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        contentView.addSubview(cancelButton)
+//        contentView.addSubview(cancelButton)
         contentView.addSubview(categoryLabel)
     }
     
@@ -36,7 +36,7 @@ class SideMenuCell: UITableViewCell {
                                     y: 5,
                                     width: 20,
                                     height: contentView.height - 10)
-        categoryLabel.frame = CGRect(x: 5,
+        categoryLabel.frame = CGRect(x: 20,
                                      y: 5,
                                      width: width,
                                      height: contentView.height - 10)
